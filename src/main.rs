@@ -60,5 +60,7 @@ fn play_game(){
 }
 //TODO write help guide
 fn help_menu()   {
-	println!("I hope this was helpful");
+	println!("You try and guess a 6 digit.");
+	println!("The program return the number of digits in the right position and right but in the wrong position.");
+	println!("For Example 23 would mean that 2 digits are in the correct spot and that 3 digits are correct but in the wrong spot.");
 }
