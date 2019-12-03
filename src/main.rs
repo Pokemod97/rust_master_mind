@@ -35,7 +35,7 @@ fn play_game(){
 
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
-        if guess == secret_number{
+        if guess.trim() == secret_number{
         	println!("You Win!");
         	break;
         }
