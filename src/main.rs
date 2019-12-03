@@ -27,8 +27,11 @@ fn main() {
 }
 //It's probably easier just to handle this with a number not a string. Too late now
 fn play_game(){
-	let secret_number: String = rand::thread_rng().gen_range(100000, 999999 +1).to_string();
+	let mut secret_number: String = rand::thread_rng().gen_range(99999, 999999 +1).to_string();
 	let mut counter:u32 = 1;
+	if secret_number == "99999"{
+		 secret_number = String::from("000000");
+	}
 	loop{
 		println!("Enter 6 digit number. Or to quit enter anything other than a 6 digit number ex (6)");
 		println!("Your guess (#{}):",counter);
