@@ -27,14 +27,13 @@ fn main() {
 }
 //It's probably easier just to handle this with a number not a string. Too late now
 fn play_game(){
-	let secret_number: String = rand::thread_rng().gen_range(100000, 999999).to_string();
+	let secret_number: String = rand::thread_rng().gen_range(100000, 999999 +1).to_string();
 	let mut counter:u32 = 1;
 	loop{
 		println!("Enter 6 digit number. Or to quit enter anything other than a 6 digit number ex (6)");
 		println!("Your guess (#{}):",counter);
 		counter += 1;
         let mut guess = String::new();
-
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
         if guess.trim() == secret_number{
@@ -43,19 +42,23 @@ fn play_game(){
         }
         let mut wrong_position: u32 = 0;
         let mut right_position: u32 = 0;
-         
-        if guess.trim().len() != 6{
+        guess = guess.trim().to_string();
+        if guess.len() != 6{
         	println!("Ok here is the right answer: {}", secret_number);
         	break;
         }
-        for (i, c) in secret_number.chars().enumerate() {
-            if guess.contains(c){
-            	if i < guess.len() && guess.chars().nth(i).unwrap() == c {
+        let mut secret_chars_left = secret_number.clone();
+        for (i, c) in guess.chars().enumerate() {
+            if secret_chars_left.contains(c){
+            	if secret_chars_left.chars().nth(i).unwrap() == c {
             		right_position += 1;
+            		
             	} else {
             		wrong_position +=1;
             	}
+            	secret_chars_left =  secret_chars_left.replacen(c, " ",1);
             }
+            
         }
         println!("{}{}", right_position,wrong_position);
         /*if i == 5 {
