@@ -58,13 +58,13 @@ fn play_game(){
         }
         let mut wrong_position: u32 = 0;
         let mut right_position: u32 = 0;
-        if guess.parse::<u32>().is_err(){
+        if ! guess.chars().all(|x| char::is_ascii_digit(&x)){
         	println!("Has to be a number.");
         	continue;
         }
         let mut indexs_marked: Vec<usize> = Vec::new();
         for (i, c) in guess.chars().enumerate() {
-            if secret_number.contains(c){
+            if secret_number.contains(c) && i < secret_number.len(){
             	if secret_number.chars().nth(i).unwrap() == c {
             		right_position += 1;
             		if indexs_marked.contains(&i){
