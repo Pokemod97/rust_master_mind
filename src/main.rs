@@ -10,16 +10,24 @@ fn main() {
      }
 	}
 	loop {
-		println!("Welcome to mastermind. To play enter 1. For info enter 2. To quit enter 3.");
+		println!("Welcome to mastermind. To play enter 1. For info enter 2. To quit enter q.");
 		let mut option = String::new();
 		io::stdin().read_line(&mut option)
 		    .expect("Failed to read line");
-		let option: u32 = option.trim().parse().expect("A Number");
+		    if option.trim() == "q" {
+		    	exit(0)
+		    }
+		let option: u32 = match option.trim().parse() {
+    		Ok(num) => num,
+    		Err(_) => {
+    			println!("Please enter a number.");
+    			continue;
+    		},
+		};
 		match option {
 			1 => play_game(),
 			2 => help_menu(),
-			3 => exit(0),
-			_ => exit(0),
+			_ => continue,
 		}
 
 	}
@@ -33,34 +41,48 @@ fn play_game(){
 		 secret_number = String::from("000000");
 	}
 	loop{
-		println!("Enter 6 digit number. Or to quit enter anything other than a 6 digit number ex (6)");
+		println!("Enter 6 digit number. Or to quit enter q");
 		println!("Your guess (#{}):",counter);
 		counter += 1;
         let mut guess = String::new();
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
-        if guess.trim() == secret_number{
+        guess = guess.trim().to_string();
+        if guess == "q"{
+        	println!("Ok here is the right answer: {}", secret_number);
+        	break;
+        }
+        if guess == secret_number{
         	println!("You Win!");
         	break;
         }
         let mut wrong_position: u32 = 0;
         let mut right_position: u32 = 0;
-        guess = guess.trim().to_string();
-        if guess.len() != 6{
-        	println!("Ok here is the right answer: {}", secret_number);
-        	break;
+        if guess.parse::<u32>().is_err(){
+        	println!("Has to be a number.");
+        	continue;
         }
-        let mut secret_chars_left = secret_number.clone();
+        let mut indexs_marked: Vec<usize> = Vec::new();
         for (i, c) in guess.chars().enumerate() {
-            if secret_chars_left.contains(c){
-            	if secret_chars_left.chars().nth(i).unwrap() == c {
+            if secret_number.contains(c){
+            	if secret_number.chars().nth(i).unwrap() == c {
             		right_position += 1;
-            		
+            		if indexs_marked.contains(&i){
+            			wrong_position -= 1;
+            		} else {
+            			indexs_marked.push(i);
+            		}
             	} else {
-            		wrong_position +=1;
+            		let index =  secret_number.find(c).unwrap();
+					if ! (indexs_marked.contains(&index)){
+            			wrong_position +=1;
+            			indexs_marked.push(index);
+            		}
             	}
-            	secret_chars_left =  secret_chars_left.replacen(c, " ",1);
+
+            	
             }
+
             
         }
         println!("{}{}", right_position,wrong_position);
