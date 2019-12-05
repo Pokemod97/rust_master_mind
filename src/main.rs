@@ -64,7 +64,7 @@ fn play_game() {
             println!("Has to be a  6 digit number.");
             continue;
         }
-        let  guess_digits: Vec<u32> = guess.chars().map(|x| x.to_digit(10).unwrap()).collect();
+        let mut guess_digits: Vec<u32> = guess.chars().map(|x| x.to_digit(10).unwrap()).collect();
         if secret_number.iter().eq(guess_digits.iter()) {
             println!("{}", secret_number_string);
         }
@@ -75,6 +75,7 @@ fn play_game() {
             if guess_digits[i] == *val {
                 right_position += 1;
                 secret_number_clone[i] = 11;
+                guess_digits[i] = 12;
             }
             
         }
