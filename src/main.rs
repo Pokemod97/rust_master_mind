@@ -34,7 +34,7 @@ fn main() {
 }
 fn play_game() {
     let mut rand_generator = rand::thread_rng();
-    let secret_number: [u32; 6] = [
+        let secret_number: [u32; 6] = [
         rand_generator.gen_range(0, 10),
         rand_generator.gen_range(0, 10),
         rand_generator.gen_range(0, 10),
@@ -64,7 +64,7 @@ fn play_game() {
             println!("Has to be a  6 digit number.");
             continue;
         }
-        let guess_digits: Vec<u32> = guess.chars().map(|x| x.to_digit(10).unwrap()).collect();
+        let  guess_digits: Vec<u32> = guess.chars().map(|x| x.to_digit(10).unwrap()).collect();
         if secret_number.iter().eq(guess_digits.iter()) {
             println!("{}", secret_number_string);
         }
@@ -76,14 +76,15 @@ fn play_game() {
                 right_position += 1;
                 secret_number_clone[i] = 11;
             }
+            
         }
         for val in guess_digits.iter() {
-            if secret_number_clone.contains(val) {
-                let index: u32 = *secret_number_clone.iter().find(|x| x == &val).unwrap();
-                if index < 6 {
-                    wrong_position += 1;
-                    secret_number_clone[index as usize] = 11;
-                }
+            if  secret_number_clone.contains(val){
+                let index: usize =  secret_number_clone.iter().position(|x| x == val).unwrap_or(7);
+                if index != 7{
+                	wrong_position += 1;
+	                secret_number_clone[index] = 11;
+            	}
             }
         }
         counter += 1;
